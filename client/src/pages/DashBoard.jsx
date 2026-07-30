@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import api from "../api/api";
 
-import Navbar from "../components/NavBar";
+import Navbar from "../components/Navbar"
 import UploadForm from "../components/UploadForm";
 import FeedbackTable from "../components/FeedbackTable";
 import StatsCards from "../components/StatsCards";
@@ -88,7 +88,7 @@ function DashBoard() {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      <Navbar />
+      <Navbar/>
 
       <div className="max-w-7xl mx-auto p-8">
         <h1 className="text-4xl font-bold mb-6">AI Feedback Dashboard</h1>
