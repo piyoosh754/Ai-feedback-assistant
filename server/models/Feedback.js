@@ -29,6 +29,19 @@ const feedbackSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
+  },
+
+  {
+     theme: {
+  type: String,
+  default: "",
+},
+themeStatus: {
+  type: String,
+  enum: ["Pending", "Approved", "Rejected"],
+  default: "Pending",
+},
+
   }
 );
 

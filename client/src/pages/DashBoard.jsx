@@ -13,7 +13,7 @@ import LineChartComponent from "../components/charts/LineChartComponent";
 import SearchFilter from "../components/SearchFilter";
 import toast from "react-hot-toast";
 
-function Dashboard() {
+function DashBoard() {
   const [stats, setStats] = useState(null);
   const [trend, setTrend] = useState([]);
   const [feedbacks, setFeedbacks] = useState([]);
@@ -133,4 +133,4 @@ function Dashboard() {
   );
 }
 
-export default Dashboard;
+export default DashBoard;

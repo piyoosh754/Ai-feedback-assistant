@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 
 import Login from "./pages/Login";
-import Dashboard from "./pages/Dashboard";
+import DashBoard from "./pages/DashBoard";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
@@ -13,7 +13,7 @@ function App() {
         path="/dashboard"
         element={
           <ProtectedRoute>
-            <Dashboard />
+            <DashBoard />
           </ProtectedRoute>
         }
       />

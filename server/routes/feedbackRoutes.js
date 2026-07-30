@@ -10,4 +10,5 @@ router.get('/stats', getFeedbackStats)
 router.get("/trend", getFeedbackTrend);
 router.get("/search", searchFeedback);
 router.delete("/:id", deleteFeedback);
+
 export default router;
