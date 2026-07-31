@@ -1,6 +1,6 @@
 import express from "express";
 import upload from "../config/multer.js";
-import { uploadFeedbackCSV, getAllFeedback, generateSynthesis, getFeedbackStats, getFeedbackTrend, searchFeedback, deleteFeedback} from "../controllers/feedbackControllers.js";
+import { uploadFeedbackCSV, getAllFeedback, generateSynthesis, getFeedbackStats, getFeedbackTrend, searchFeedback, deleteFeedback, saveReport, getReports, deleteReport} from "../controllers/feedbackControllers.js";
 
 const router = express.Router();
 router.post("/upload", upload.single("file"), uploadFeedbackCSV);
@@ -10,5 +10,8 @@ router.get('/stats', getFeedbackStats)
 router.get("/trend", getFeedbackTrend);
 router.get("/search", searchFeedback);
 router.delete("/:id", deleteFeedback);
+router.post("/report", saveReport);
+router.get("/report", getReports);
+router.delete("/report/:id", deleteReport)
 
 export default router;

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import api from "../api/api";
 
-import Navbar from "../components/Navbar"
+import Navbar from "../components/Navbar";
 import UploadForm from "../components/UploadForm";
 import FeedbackTable from "../components/FeedbackTable";
 import StatsCards from "../components/StatsCards";
@@ -12,6 +12,7 @@ import PieChartComponent from "../components/charts/PieChartComponent";
 import LineChartComponent from "../components/charts/LineChartComponent";
 import SearchFilter from "../components/SearchFilter";
 import toast from "react-hot-toast";
+import ReportHistory from "../components/ReportHistory";
 
 function DashBoard() {
   const [stats, setStats] = useState(null);
@@ -19,6 +20,7 @@ function DashBoard() {
   const [feedbacks, setFeedbacks] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
+  const [reports, setReports] = useState([]);
 
   const lastIndex = currentPage * itemsPerPage;
   const firstIndex = lastIndex - itemsPerPage;
@@ -69,7 +71,7 @@ function DashBoard() {
       setCurrentPage(1);
     } catch (error) {
       console.log(error);
-      toast.error("delete failed")
+      toast.error("delete failed");
     }
   };
   const fetchFeedbacks = async () => {
@@ -80,15 +82,52 @@ function DashBoard() {
       console.log(error);
     }
   };
+
+  const fetchReports = async () => {
+    try {
+      const { data } = await api.get("/feedback/report");
+
+      setReports(data.reports);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const saveReviewedReport = async () => {
+    try {
+      await api.post("/feedback/report", {
+        summary: stats,
+      });
+
+      toast.success("Report Saved Successfully");
+
+      fetchReports();
+    } catch (error) {
+      toast.error("Failed To Save Report");
+    }
+  };
+
+  const deleteReport = async (id) => {
+    try {
+      await api.delete(`/feedback/report/${id}`);
+
+      toast.success("Report Deleted");
+
+      fetchReports();
+    } catch (error) {
+      toast.error("Delete Failed");
+    }
+  };
   useEffect(() => {
     fetchStats();
     fetchTrend();
     fetchFeedbacks();
+    fetchReports();
   }, []);
 
   return (
     <div className="min-h-screen bg-gray-100">
-      <Navbar/>
+      <Navbar />
 
       <div className="max-w-7xl mx-auto p-8">
         <h1 className="text-4xl font-bold mb-6">AI Feedback Dashboard</h1>
@@ -105,8 +144,12 @@ function DashBoard() {
         <SearchFilter onSearch={handleSearch} />
 
         <AISummary />
+        <div className="mt-5">
+          
+          <ReportHistory reports={reports} onDelete={deleteReport} />
+        </div>
 
-        <FeedbackTable feedbacks={currentFeedbacks} onDelete={handleDelete}/>
+        <FeedbackTable feedbacks={currentFeedbacks} onDelete={handleDelete} />
         <div className="flex justify-center items-center gap-4 mt-6">
           <button
             onClick={() => setCurrentPage((prev) => prev - 1)}

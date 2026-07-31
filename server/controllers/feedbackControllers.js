@@ -2,6 +2,7 @@ import fs from "fs";
 import csv from "csv-parser";
 import Feedback from "../models/Feedback.js";
 import { analyzeFeedback } from "../services/groqService.js";
+import ReviewedReport from "../models/ReviewedReport.js";
 
 export const generateSynthesis = async (req, res) => {
   try {
@@ -226,6 +227,58 @@ export const deleteFeedback = async (req, res) => {
     res.json({
       success: true,
       message: "Feedback deleted successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+export const saveReport = async (req, res) => {
+  try {
+    const report = await ReviewedReport.create({
+      summary: req.body.summary,
+    });
+
+    res.status(201).json({
+      success: true,
+      report,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+export const getReports = async (req, res) => {
+  try {
+    const reports = await ReviewedReport.find().sort({
+      createdAt: -1,
+    });
+
+    res.json({
+      success: true,
+      reports,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+export const deleteReport = async (req, res) => {
+  try {
+    await ReviewedReport.findByIdAndDelete(req.params.id);
+
+    res.json({
+      success: true,
+      message: "Deleted Successfully",
     });
   } catch (error) {
     res.status(500).json({
